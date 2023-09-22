@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classroom;
 use App\Models\Topic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TopicsController extends Controller
 {
@@ -12,14 +14,15 @@ class TopicsController extends Controller
      */
     public function index()
     {
-        $topics = Topic::get();
+        $topics = Topic::all()->where('user_id',Auth::id());
         $success = session('success');
         return view('topics.index', compact('topics', 'success'));
     }
 
     public function create()
     {
-        return view('topics.create');
+        $classrooms = Classroom::all();
+        return view('topics.create', compact('classrooms'));
     }
 
     public function store(Request $request)
@@ -47,7 +50,7 @@ class TopicsController extends Controller
         return redirect(route('topic.index'));
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         Topic::destroy($id);
         return redirect(route('topic.index'));

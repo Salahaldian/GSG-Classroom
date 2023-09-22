@@ -16,6 +16,11 @@ class Topic extends Model
         'name', 'classroom_id', 'user_id'
     ];
 
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class);
+    }
+
     public function classworks(): HasMany
     {
         return $this->hasMany(Classwork::class, 'topic_id', 'id');
